@@ -10,7 +10,7 @@ export default function CategoryMenu() {
   const params = useParams();
   const category = decodeURIComponent(params?.category as string);
 
-  // Get all menu items for this category
+
   const categoryItems = useMemo(() => {
     const items: Array<{
       item: typeof restaurants[0]["menu"][0];
@@ -189,12 +189,6 @@ export default function CategoryMenu() {
                         {restaurant.name}
                       </div>
                       <div className="text-xs text-gray-600">{restaurant.location}</div>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-yellow-500">⭐</span>
-                      <span className="text-sm font-bold text-gray-900">
-                        {restaurant.rating}
-                      </span>
                     </div>
                   </div>
                 </div>

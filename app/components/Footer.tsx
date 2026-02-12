@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand Section */}
           <div className="md:col-span-2">
-            <Link href="/" className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
+            <Link href="/home" className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
               <span className="text-2xl">🍽️</span>
               <span>Restaurant Menus</span>
             </Link>
@@ -68,10 +68,19 @@ export default function Footer() {
               © {currentYear} Restaurant Menus. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm text-gray-600">
-              <Link href="#" className="hover:text-gray-900 transition-colors">
+              <Link href="/blogs" className="hover:text-gray-900 transition-colors">
+                Blog
+              </Link>
+              <Link href="/menus" className="hover:text-gray-900 transition-colors">
+                Menus
+              </Link>
+              <Link href="/contact" className="hover:text-gray-900 transition-colors">
+                Contact
+              </Link>
+              <Link href="/privacy" className="hover:text-gray-900 transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="#" className="hover:text-gray-900 transition-colors">
+              <Link href="/terms" className="hover:text-gray-900 transition-colors">
                 Terms of Service
               </Link>
             </div>

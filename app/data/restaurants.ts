@@ -6,6 +6,66 @@ export interface MenuItem {
   category: string;
 }
 
+/** Operating hours for "Open now" and display */
+export interface OperatingHours {
+  weekdays?: string;
+  saturday?: string;
+  sunday?: string;
+  /** Override: currently open (used for "Open now" badge) */
+  openNow?: boolean;
+}
+
+export interface RestaurantContact {
+  phone?: string;
+  email?: string;
+  facebook?: string;
+  instagram?: string;
+  twitter?: string;
+}
+
+export interface RestaurantReview {
+  author: string;
+  rating: number;
+  text: string;
+  date?: string;
+}
+
+/** Rating distribution for the reviews summary (counts per tier) */
+export interface RatingDistribution {
+  excellent: number;
+  good: number;
+  average: number;
+  poor: number;
+  terrible: number;
+}
+
+/** Attribute scores (e.g. Service, Food, Value) — 0–5 scale */
+export interface ReviewAttributeScores {
+  service?: number;
+  food?: number;
+  value?: number;
+}
+
+export interface ReviewsSummary {
+  /** Total number of reviews */
+  totalReviews: number;
+  /** Average rating (e.g. 3.7) */
+  averageRating: number;
+  /** Count per tier: Excellent (5), Good (4), Average (3), Poor (2), Terrible (1) */
+  distribution: RatingDistribution;
+  /** Service, Food, Value scores 0–5 */
+  attributeScores?: ReviewAttributeScores;
+  /** Number of insider tips / Q&A entries */
+  insiderTipsCount?: number;
+}
+
+/** High-quality photos: interior, exterior, food */
+export interface RestaurantPhotos {
+  interior?: string;
+  exterior?: string;
+  food?: string[];
+}
+
 export interface Restaurant {
   id: string;
   name: string;
@@ -14,8 +74,31 @@ export interface Restaurant {
   image: string;
   imageUrl: string;
   location: string;
+  /** Lat/lng for map and "near me" distance (Ghana) */
+  coordinates?: { lat: number; lng: number };
   rating: number;
   menu: MenuItem[];
+  /** Price tier 1–3 (₵, ₵₵, ₵₵₵); if omitted, derived from menu */
+  priceTier?: 1 | 2 | 3;
+  /** Minimum budget in GHS; if omitted, derived from cheapest menu item */
+  minimumBudget?: number;
+  openNow?: boolean;
+  reservations?: boolean;
+  onlineWaitlist?: boolean;
+  delivery?: boolean;
+  takeout?: boolean;
+  goodForDinner?: boolean;
+  /** e.g. ["Vegetarian", "Halal"] */
+  dietary?: string[];
+  /** Operating hours and open-now override */
+  hours?: OperatingHours;
+  contact?: RestaurantContact;
+  photos?: RestaurantPhotos;
+  reviews?: RestaurantReview[];
+  /** Summary for the reviews section (average, distribution, attribute scores) */
+  reviewsSummary?: ReviewsSummary;
+  /** Atmosphere tags: family-friendly, romantic, casual, etc. */
+  atmosphere?: string[];
 }
 
 // Local images from /public/images/restuarants/
@@ -40,7 +123,45 @@ export const restaurants: Restaurant[] = [
     image: "🍛",
     imageUrl: getRestaurantImageUrl(0),
     location: "Ghana National Cultural Centre, Kumasi",
+    coordinates: { lat: 6.6884, lng: -1.6244 },
     rating: 4.7,
+    priceTier: 2,
+    minimumBudget: 12,
+    openNow: true,
+    hours: {
+      weekdays: "Mon–Fri 8:00 AM – 10:00 PM",
+      saturday: "Sat 9:00 AM – 11:00 PM",
+      sunday: "Sun 10:00 AM – 9:00 PM",
+      openNow: true,
+    },
+    contact: {
+      phone: "+233 24 123 4567",
+      email: "info@ikescafe.com",
+      facebook: "ikescafekumasi",
+      instagram: "ikescafegrill",
+    },
+    photos: {
+      exterior: getRestaurantImageUrl(4),
+      interior: getRestaurantImageUrl(0),
+      food: [getRestaurantImageUrl(0), getRestaurantImageUrl(1), getRestaurantImageUrl(2)],
+    },
+    atmosphere: ["Family-friendly", "Casual", "Cultural"],
+    dietary: ["Halal"],
+    reviews: [
+      { author: "Ama K.", rating: 5, text: "Best jollof in Kumasi! The banku and tilapia was perfectly cooked.", date: "Jan 2025" },
+      { author: "Kwame S.", rating: 4.5, text: "Great atmosphere at the Cultural Centre. Service was a bit slow but food made up for it.", date: "Dec 2024" },
+      { author: "Esi M.", rating: 4.7, text: "Authentic Ghanaian experience. Will definitely come back with the family.", date: "Jan 2025" },
+      { author: "Kofi A.", rating: 5, text: "Consistently great. The fufu and light soup is my go-to.", date: "Jan 2025" },
+      { author: "Abena T.", rating: 1, text: "Had a bad experience with the order. Hoping it was a one-off.", date: "Dec 2024" },
+      { author: "Yaw M.", rating: 1, text: "Service was very slow and food was cold.", date: "Dec 2024" },
+    ],
+    reviewsSummary: {
+      totalReviews: 6,
+      averageRating: 3.7,
+      distribution: { excellent: 4, good: 0, average: 0, poor: 0, terrible: 2 },
+      attributeScores: { service: 4.5, food: 3.7, value: 3.5 },
+      insiderTipsCount: 4,
+    },
     menu: [
       {
         id: "m1",
@@ -89,7 +210,40 @@ export const restaurants: Restaurant[] = [
     image: "🍲",
     imageUrl: getRestaurantImageUrl(1),
     location: "Ofori Kuragu Ave, Kumasi",
+    coordinates: { lat: 6.7034, lng: -1.6444 },
     rating: 4.6,
+    priceTier: 1,
+    minimumBudget: 10,
+    openNow: false,
+    hours: {
+      weekdays: "Mon–Thu 11:00 AM – 9:00 PM",
+      saturday: "Fri–Sat 11:00 AM – 10:30 PM",
+      sunday: "Sun 12:00 PM – 8:00 PM",
+      openNow: false,
+    },
+    contact: {
+      phone: "+233 32 200 1234",
+      email: "hello@casarestaurant.com",
+      instagram: "casarestaurant_gh",
+    },
+    photos: {
+      exterior: getRestaurantImageUrl(1),
+      interior: getRestaurantImageUrl(3),
+      food: [getRestaurantImageUrl(1), getRestaurantImageUrl(2)],
+    },
+    atmosphere: ["Casual", "Good for groups"],
+    dietary: ["Vegetarian", "Vegan options"],
+    reviews: [
+      { author: "David O.", rating: 4.5, text: "Waakye special is a must-try. Cozy spot on Ofori Kuragu.", date: "Jan 2025" },
+      { author: "Adwoa B.", rating: 4.8, text: "Love the Red Red and the relaxed vibe. Great for lunch.", date: "Dec 2024" },
+    ],
+    reviewsSummary: {
+      totalReviews: 2,
+      averageRating: 4.65,
+      distribution: { excellent: 2, good: 0, average: 0, poor: 0, terrible: 0 },
+      attributeScores: { service: 4.5, food: 4.7, value: 4.6 },
+      insiderTipsCount: 1,
+    },
     menu: [
       {
         id: "m6",
@@ -138,6 +292,7 @@ export const restaurants: Restaurant[] = [
     image: "🥘",
     imageUrl: getRestaurantImageUrl(2),
     location: "Adiembra Rd, Kumasi",
+    coordinates: { lat: 6.6684, lng: -1.6094 },
     rating: 4.8,
     menu: [
       {
@@ -187,6 +342,7 @@ export const restaurants: Restaurant[] = [
     image: "🍽️",
     imageUrl: getRestaurantImageUrl(3),
     location: "Ahinsan / Lake Rd, Kumasi",
+    coordinates: { lat: 6.7134, lng: -1.6044 },
     rating: 4.9,
     menu: [
       {
@@ -243,6 +399,7 @@ export const restaurants: Restaurant[] = [
     image: "🦜",
     imageUrl: getRestaurantImageUrl(4),
     location: "Ring Rd East, Accra",
+    coordinates: { lat: 5.6037, lng: -0.187 },
     rating: 4.7,
     menu: [
       {
@@ -292,6 +449,7 @@ export const restaurants: Restaurant[] = [
     image: "🌳",
     imageUrl: getRestaurantImageUrl(0),
     location: "West Light Industrial Area, Nyaniba, Accra",
+    coordinates: { lat: 5.6237, lng: -0.172 },
     rating: 4.8,
     menu: [
       {
@@ -341,6 +499,7 @@ export const restaurants: Restaurant[] = [
     image: "🍻",
     imageUrl: getRestaurantImageUrl(1),
     location: "Lesley Opoku-Ware Dr, Kumasi",
+    coordinates: { lat: 6.6734, lng: -1.6494 },
     rating: 4.6,
     menu: [
       {
@@ -397,6 +556,7 @@ export const restaurants: Restaurant[] = [
     image: "🎯",
     imageUrl: getRestaurantImageUrl(2),
     location: "Okodan Rd, Accra",
+    coordinates: { lat: 5.5857, lng: -0.207 },
     rating: 4.7,
     menu: [
       {
@@ -446,6 +606,7 @@ export const restaurants: Restaurant[] = [
     image: "🏙️",
     imageUrl: getRestaurantImageUrl(3),
     location: "Noi Fetreke St, Accra",
+    coordinates: { lat: 5.6187, lng: -0.205 },
     rating: 4.8,
     menu: [
       {
@@ -502,6 +663,7 @@ export const restaurants: Restaurant[] = [
     image: "🍲",
     imageUrl: getRestaurantImageUrl(4),
     location: "10th St, Osu, Accra",
+    coordinates: { lat: 5.5937, lng: -0.167 },
     rating: 4.9,
     menu: [
       {
@@ -558,6 +720,7 @@ export const restaurants: Restaurant[] = [
     image: "🍛",
     imageUrl: getRestaurantImageUrl(0),
     location: "JK Acheampong Ave, Kumasi",
+    coordinates: { lat: 6.7084, lng: -1.6394 },
     rating: 4.7,
     menu: [
       {
@@ -614,6 +777,7 @@ export const restaurants: Restaurant[] = [
     image: "🏠",
     imageUrl: getRestaurantImageUrl(1),
     location: "Kumasi",
+    coordinates: { lat: 6.6634, lng: -1.6144 },
     rating: 4.6,
     menu: [
       {

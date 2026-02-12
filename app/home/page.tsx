@@ -5,10 +5,10 @@ import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
-import { restaurants, type Restaurant } from "./data/restaurants";
-import { blogPosts } from "./data/blogs";
+import { restaurants, type Restaurant } from "../data/restaurants";
+import { blogPosts } from "../data/blogs";
 
-const NearMeMap = dynamic(() => import("./components/NearMeMap").then((m) => ({ default: m.NearMeMap })), {
+const NearMeMap = dynamic(() => import("../components/NearMeMap").then((m) => ({ default: m.NearMeMap })), {
   ssr: false,
   loading: () => <div className="h-[320px] w-full rounded-xl bg-gray-100 animate-pulse" />,
 });
@@ -24,7 +24,7 @@ const partnerImages = [
 
 const NEAR_ME_RADIUS_KM = 5;
 
-
+/** Haversine distance in km */
 function getDistanceKm(
   lat1: number,
   lng1: number,

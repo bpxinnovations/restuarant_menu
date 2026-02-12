@@ -24,7 +24,7 @@ const partnerImages = [
 
 const NEAR_ME_RADIUS_KM = 5;
 
-
+/** Haversine distance in km */
 function getDistanceKm(
   lat1: number,
   lng1: number,

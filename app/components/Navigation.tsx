@@ -12,12 +12,13 @@ export default function Navigation() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // set initial
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const navLinks = [
-    { href: "#contact", label: "Contact Us" },
+    { href: "/blogs", label: "Blog" },
+    { href: "/contact", label: "Contact Us" },
   ];
 
   return (
@@ -31,7 +32,7 @@ export default function Navigation() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo - primary icon + text */}
-          <Link href="/" className="flex items-center gap-2.5 text-xl font-bold text-gray-900 hover:opacity-90 transition-opacity">
+          <Link href="/home" className="flex items-center gap-2.5 text-xl font-bold text-gray-900 hover:opacity-90 transition-opacity">
             <div className="flex items-center justify-center w-9 h-9">
               <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8 text-primary">
                 <path d="M4 8 L16 4 L28 8 L28 24 L16 28 L4 24 Z" stroke="currentColor" strokeWidth="2" fill="none" strokeLinejoin="round"/>
@@ -48,7 +49,7 @@ export default function Navigation() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
-                  pathname === link.href ? "text-gray-900" : "text-gray-600 hover:text-gray-900"
+                  pathname === link.href || (link.href === "/blogs" && pathname.startsWith("/blogs")) || (link.href === "/contact" && pathname === "/contact") ? "text-gray-900" : "text-gray-600 hover:text-gray-900"
                 }`}
               >
                 {link.label}
